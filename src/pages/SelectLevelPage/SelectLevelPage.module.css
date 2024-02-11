@@ -4,6 +4,37 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 32px;
+}
+
+.mode {
+  display: flex;
+  width: 197px;
+  height: 98px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+
+  border-radius: 12px;
+  border-color: #c2f5ff;
+  background: #fff;
+
+  color: #004980;
+  font-family: StratosSkyeng;
+  font-size: 38px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 38px;
+  cursor: pointer;
+}
+
+.mode:hover {
+  color: #c2f5ff;
+  background: #004980;
+  border-color: #c2f5ff;
 }
 
 .modal {

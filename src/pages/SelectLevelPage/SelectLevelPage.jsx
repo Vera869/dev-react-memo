@@ -4,6 +4,7 @@ import styles from "./SelectLevelPage.module.css";
 export function SelectLevelPage() {
   return (
     <div className={styles.container}>
+      <button className={styles.mode}>Quick game</button>
       <div className={styles.modal}>
         <h1 className={styles.title}>Выбери сложность</h1>
         <ul className={styles.levels}>
