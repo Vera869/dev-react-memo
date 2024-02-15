@@ -5,6 +5,8 @@ import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+import { useSelector } from "react-redux";
+import { AttemptCounter } from "../Counter/attemptCounter";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -56,6 +58,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     seconds: 0,
     minutes: 0,
   });
+  const isMode = useSelector(store => store.games.isMode);
 
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
@@ -175,6 +178,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
+        {isMode ? <AttemptCounter /> : ""}
         <div className={styles.timer}>
           {status === STATUS_PREVIEW ? (
             <div>
