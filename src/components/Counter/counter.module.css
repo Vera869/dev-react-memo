@@ -1,0 +1,22 @@
+.boxcounter {
+  width: 150px;
+}
+.headercounter {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 35px;
+  color: #c2f5ff;
+  font-family: StratosSkyeng;
+  font-style: normal;
+}
+.counter {
+  color: #fff;
+  font-family: StratosSkyeng;
+  font-size: 64px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 72px;
+  display: flex;
+  justify-content: center;
+}
