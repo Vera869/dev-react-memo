@@ -5,7 +5,15 @@
   padding-top: 22px;
   box-sizing: border-box;
 }
-
+.box {
+  padding: 50px 50px 10px 50px; 
+}
+.link {
+  color: #fff;
+  text-align: center;
+  font-variant-numeric: lining-nums proportional-nums;
+  text-decoration: none;
+}
 .cards {
   display: flex;
   flex-direction: row;

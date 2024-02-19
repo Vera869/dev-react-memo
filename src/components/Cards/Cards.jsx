@@ -8,6 +8,7 @@ import { Card } from "../../components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import { AttemptCounter } from "../Counter/attemptCounter";
 import { changeAttempts, clearAttempts } from "../../Store/Slice";
+import { Link } from "react-router-dom";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -84,6 +85,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setStatus(STATUS_IN_PROGRESS);
   }
   function resetGame() {
+    dispatch(clearAttempts());
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
@@ -193,55 +195,68 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     };
   }, [gameStartDate, gameEndDate]);
 
+  const GoToLevelPage = () => {
+    resetGame();
+  };
+
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        {isMode ? <AttemptCounter /> : ""}
-        <div className={styles.timer}>
-          {status === STATUS_PREVIEW ? (
-            <div>
-              <p className={styles.previewText}>Запоминайте пары!</p>
-              <p className={styles.previewDescription}>Игра начнется через {previewSeconds} секунд</p>
-            </div>
-          ) : (
-            <>
-              <div className={styles.timerValue}>
-                <div className={styles.timerDescription}>min</div>
-                <div>{timer.minutes.toString().padStart("2", "0")}</div>
-              </div>
-              .
-              <div className={styles.timerValue}>
-                <div className={styles.timerDescription}>sec</div>
-                <div>{timer.seconds.toString().padStart("2", "0")}</div>
-              </div>
-            </>
-          )}
-        </div>
-        {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
+    <>
+      <div className={styles.box}>
+        <Button onClick={GoToLevelPage}>
+          <Link className={styles.link} to="/">
+            К выбору уровня
+          </Link>
+        </Button>
       </div>
-
-      <div className={styles.cards}>
-        {cards.map(card => (
-          <Card
-            key={card.id}
-            onClick={() => openCard(card)}
-            open={status !== STATUS_IN_PROGRESS ? true : card.open}
-            suit={card.suit}
-            rank={card.rank}
-          />
-        ))}
-      </div>
-
-      {isGameEnded ? (
-        <div className={styles.modalContainer}>
-          <EndGameModal
-            isWon={status === STATUS_WON}
-            gameDurationSeconds={timer.seconds}
-            gameDurationMinutes={timer.minutes}
-            onClick={resetGame}
-          />
+      <div className={styles.container}>
+        <div className={styles.header}>
+          {isMode ? <AttemptCounter /> : ""}
+          <div className={styles.timer}>
+            {status === STATUS_PREVIEW ? (
+              <div>
+                <p className={styles.previewText}>Запоминайте пары!</p>
+                <p className={styles.previewDescription}>Игра начнется через {previewSeconds} секунд</p>
+              </div>
+            ) : (
+              <>
+                <div className={styles.timerValue}>
+                  <div className={styles.timerDescription}>min</div>
+                  <div>{timer.minutes.toString().padStart("2", "0")}</div>
+                </div>
+                .
+                <div className={styles.timerValue}>
+                  <div className={styles.timerDescription}>sec</div>
+                  <div>{timer.seconds.toString().padStart("2", "0")}</div>
+                </div>
+              </>
+            )}
+          </div>
+          {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
         </div>
-      ) : null}
-    </div>
+
+        <div className={styles.cards}>
+          {cards.map(card => (
+            <Card
+              key={card.id}
+              onClick={() => openCard(card)}
+              open={status !== STATUS_IN_PROGRESS ? true : card.open}
+              suit={card.suit}
+              rank={card.rank}
+            />
+          ))}
+        </div>
+
+        {isGameEnded ? (
+          <div className={styles.modalContainer}>
+            <EndGameModal
+              isWon={status === STATUS_WON}
+              gameDurationSeconds={timer.seconds}
+              gameDurationMinutes={timer.minutes}
+              onClick={resetGame}
+            />
+          </div>
+        ) : null}
+      </div>
+    </>
   );
 }
