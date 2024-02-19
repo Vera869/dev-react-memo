@@ -202,11 +202,9 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   return (
     <>
       <div className={styles.box}>
-        <Button onClick={GoToLevelPage}>
-          <Link className={styles.link} to="/">
-            К выбору уровня
-          </Link>
-        </Button>
+        <Link className={styles.link} to="/">
+          <Button onClick={GoToLevelPage}>К выбору уровня</Button>
+        </Link>
       </div>
       <div className={styles.container}>
         <div className={styles.header}>
