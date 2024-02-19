@@ -5,8 +5,9 @@ import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AttemptCounter } from "../Counter/attemptCounter";
+import { changeAttempts, clearAttempts } from "../../Store/Slice";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -43,6 +44,7 @@ function getTimerValue(startDate, endDate) {
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+  const dispatch = useDispatch();
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
@@ -58,7 +60,17 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     seconds: 0,
     minutes: 0,
   });
+  // Стейт режима игры с тремя попытками
   const isMode = useSelector(store => store.games.isMode);
+  // Колличество оставшихся попыток
+  const numAttempts = useSelector(store => store.games.attempts);
+  // useEffect для окончания игры с тремя попытками
+  useEffect(() => {
+    if (numAttempts === 0) {
+      finishGame(STATUS_LOST);
+      dispatch(clearAttempts());
+    }
+  });
 
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
@@ -130,7 +142,13 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
     if (playerLost) {
-      finishGame(STATUS_LOST);
+      dispatch(changeAttempts());
+
+      if (!isMode) {
+        finishGame(STATUS_LOST);
+      } else {
+        startGame();
+      }
       return;
     }
 
