@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setIsMode } from "../../Store/Slice";
 import styles from "./checkbox.module.css";
+// import { Button } from "../Button/Button";
+import { Link } from "react-router-dom";
 
 export function Checkbox() {
   const isMode = useSelector(store => store.games.isMode);
@@ -8,12 +10,18 @@ export function Checkbox() {
   const dispatch = useDispatch();
   const changeMode = () => {
     dispatch(setIsMode());
-    console.log(isMode);
+    // console.log(isMode);
   };
   return (
     <div className={styles.box}>
-      <h2 className={styles.header}>Играть в режиме 3 попытки</h2>
-      <input className={styles.input} type="checkbox" checked={isMode} onChange={changeMode} />
+      <div className={styles.checkbox}>
+        <input className={styles.input} type="checkbox" checked={isMode} onChange={changeMode} />
+        <h2 className={styles.header}>Лёгкий режим (3 жизни)</h2>
+      </div>
+      <button className={styles.button}>Играть</button>
+      <Link to="/" className={styles.link}>
+        Перейти к лидерборду
+      </Link>
     </div>
   );
 }
