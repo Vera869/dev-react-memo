@@ -5,6 +5,10 @@ import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+import { useDispatch, useSelector } from "react-redux";
+import { AttemptCounter } from "../Counter/attemptCounter";
+import { changeAttempts, clearAttempts } from "../../Store/Slice";
+import { Link } from "react-router-dom";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -41,6 +45,7 @@ function getTimerValue(startDate, endDate) {
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+  const dispatch = useDispatch();
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
@@ -56,6 +61,17 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     seconds: 0,
     minutes: 0,
   });
+  // Стейт режима игры с тремя попытками
+  const isMode = useSelector(store => store.games.isMode);
+  // Колличество оставшихся попыток
+  const numAttempts = useSelector(store => store.games.attempts);
+  // useEffect для окончания игры с тремя попытками
+  useEffect(() => {
+    if (numAttempts === 0) {
+      finishGame(STATUS_LOST);
+      dispatch(clearAttempts());
+    }
+  });
 
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
@@ -69,6 +85,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setStatus(STATUS_IN_PROGRESS);
   }
   function resetGame() {
+    dispatch(clearAttempts());
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
@@ -127,7 +144,13 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
     if (playerLost) {
-      finishGame(STATUS_LOST);
+      dispatch(changeAttempts());
+
+      if (!isMode) {
+        finishGame(STATUS_LOST);
+      } else {
+        startGame();
+      }
       return;
     }
 
@@ -172,54 +195,66 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     };
   }, [gameStartDate, gameEndDate]);
 
+  const GoToLevelPage = () => {
+    resetGame();
+  };
+
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <div className={styles.timer}>
-          {status === STATUS_PREVIEW ? (
-            <div>
-              <p className={styles.previewText}>Запоминайте пары!</p>
-              <p className={styles.previewDescription}>Игра начнется через {previewSeconds} секунд</p>
-            </div>
-          ) : (
-            <>
-              <div className={styles.timerValue}>
-                <div className={styles.timerDescription}>min</div>
-                <div>{timer.minutes.toString().padStart("2", "0")}</div>
-              </div>
-              .
-              <div className={styles.timerValue}>
-                <div className={styles.timerDescription}>sec</div>
-                <div>{timer.seconds.toString().padStart("2", "0")}</div>
-              </div>
-            </>
-          )}
-        </div>
-        {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
+    <>
+      <div className={styles.box}>
+        <Link className={styles.link} to="/">
+          <Button onClick={GoToLevelPage}>К выбору уровня</Button>
+        </Link>
       </div>
-
-      <div className={styles.cards}>
-        {cards.map(card => (
-          <Card
-            key={card.id}
-            onClick={() => openCard(card)}
-            open={status !== STATUS_IN_PROGRESS ? true : card.open}
-            suit={card.suit}
-            rank={card.rank}
-          />
-        ))}
-      </div>
-
-      {isGameEnded ? (
-        <div className={styles.modalContainer}>
-          <EndGameModal
-            isWon={status === STATUS_WON}
-            gameDurationSeconds={timer.seconds}
-            gameDurationMinutes={timer.minutes}
-            onClick={resetGame}
-          />
+      <div className={styles.container}>
+        <div className={styles.header}>
+          {isMode ? <AttemptCounter /> : ""}
+          <div className={styles.timer}>
+            {status === STATUS_PREVIEW ? (
+              <div>
+                <p className={styles.previewText}>Запоминайте пары!</p>
+                <p className={styles.previewDescription}>Игра начнется через {previewSeconds} секунд</p>
+              </div>
+            ) : (
+              <>
+                <div className={styles.timerValue}>
+                  <div className={styles.timerDescription}>min</div>
+                  <div>{timer.minutes.toString().padStart("2", "0")}</div>
+                </div>
+                .
+                <div className={styles.timerValue}>
+                  <div className={styles.timerDescription}>sec</div>
+                  <div>{timer.seconds.toString().padStart("2", "0")}</div>
+                </div>
+              </>
+            )}
+          </div>
+          {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
         </div>
-      ) : null}
-    </div>
+
+        <div className={styles.cards}>
+          {cards.map(card => (
+            <Card
+              key={card.id}
+              onClick={() => openCard(card)}
+              open={status !== STATUS_IN_PROGRESS ? true : card.open}
+              suit={card.suit}
+              rank={card.rank}
+            />
+          ))}
+        </div>
+
+        {isGameEnded ? (
+          <div className={styles.modalContainer}>
+            <EndGameModal
+              isWon={status === STATUS_WON}
+              gameDurationSeconds={timer.seconds}
+              gameDurationMinutes={timer.minutes}
+              onClick={resetGame}
+            />
+          </div>
+        ) : null}
+      </div>
+    </>
   );
 }
