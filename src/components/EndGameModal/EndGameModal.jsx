@@ -4,9 +4,44 @@ import { Button } from "../Button/Button";
 
 import deadImageUrl from "./images/dead.png";
 import celebrationImageUrl from "./images/celebration.png";
+import { useSelector } from "react-redux";
+import { useRef, useState } from "react";
+import { addLeader } from "../../api";
+import { Link } from "react-router-dom";
 
 export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
-  const title = isWon ? "Вы победили!" : "Вы проиграли!";
+  const [username, setUsername] = useState("Пользователь");
+  const [isAddingToLeaderboard, setIsAddingToLeaderboard] = useState(false);
+
+  const currentLevel = useSelector(state => state.games.currentLevel);
+  const leaders = useSelector(state => state.games.leaders);
+
+  const buttonRef = useRef();
+  const time = gameDurationMinutes * 60 + gameDurationSeconds;
+
+  const isLeader = leaders.filter(leader => {
+    return leader.time > time;
+  });
+
+  function isAddToLeaders() {
+    if (isWon === true && isLeader.length > 0 && currentLevel === 3) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function addToLeaderboard({ username, time }) {
+    buttonRef.disabled = true;
+
+    addLeader({ username, time }).then(() => {
+      buttonRef.disabled = false;
+      setIsAddingToLeaderboard(true);
+      setUsername("");
+    });
+  }
+
+  const title = isWon ? (isAddToLeaders() === true ? "Вы попали на Лидерборд!" : "Вы победили!") : "Вы проиграли!";
 
   const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
 
@@ -16,12 +51,29 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
     <div className={styles.modal}>
       <img className={styles.image} src={imgSrc} alt={imgAlt} />
       <h2 className={styles.title}>{title}</h2>
+      {isAddToLeaders() === true && isAddingToLeaderboard === false && (
+        <>
+          <input
+            className={styles.username}
+            type="text"
+            placeholder="Пользователь"
+            value={username}
+            onChange={event => setUsername(event.target.value)}
+          />
+          <button className={styles.addButton} ref={buttonRef} onClick={() => addToLeaderboard({ username, time })}>
+            Отправить
+          </button>
+        </>
+      )}
       <p className={styles.description}>Затраченное время:</p>
       <div className={styles.time}>
         {gameDurationMinutes.toString().padStart("2", "0")}.{gameDurationSeconds.toString().padStart("2", "0")}
       </div>
 
       <Button onClick={onClick}>Начать сначала</Button>
+      <Link className={styles.leaderboardLink} to="/leaderboard">
+        Перейти к лидерборду
+      </Link>
     </div>
   );
 }
