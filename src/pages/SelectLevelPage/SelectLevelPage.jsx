@@ -1,25 +1,31 @@
 import { Link } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
 import { Checkbox } from "../../components/Checkbox/checkbox";
+import { useDispatch } from "react-redux";
+import { setCurrentLevel } from "../../Store/Slice";
 
 export function SelectLevelPage() {
+  const dispatch = useDispatch();
+  const clickLevel = value => {
+    dispatch(setCurrentLevel(value));
+  };
   return (
     <div className={styles.container}>
       <div className={styles.modal}>
         <h1 className={styles.title}>Выбери сложность</h1>
         <ul className={styles.levels}>
           <li className={styles.level}>
-            <Link className={styles.levelLink} to="/game/3">
+            <Link className={styles.levelLink} onClick={() => clickLevel(1)}>
               1
             </Link>
           </li>
           <li className={styles.level}>
-            <Link className={styles.levelLink} to="/game/6">
+            <Link className={styles.levelLink} onClick={() => clickLevel(2)}>
               2
             </Link>
           </li>
           <li className={styles.level}>
-            <Link className={styles.levelLink} to="/game/9">
+            <Link className={styles.levelLink} onClick={() => clickLevel(3)}>
               3
             </Link>
           </li>

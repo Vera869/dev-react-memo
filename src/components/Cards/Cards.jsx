@@ -84,6 +84,13 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setTimer(getTimerValue(startDate, null));
     setStatus(STATUS_IN_PROGRESS);
   }
+  function startNewAttempt() {
+    //const startDate = new Date();
+    setGameEndDate(null);
+    //setGameStartDate(startDate);
+    //setTimer(getTimerValue(startDate, null));
+    setStatus(STATUS_IN_PROGRESS);
+  }
   function resetGame() {
     dispatch(clearAttempts());
     setGameStartDate(null);
@@ -149,7 +156,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       if (!isMode) {
         finishGame(STATUS_LOST);
       } else {
-        startGame();
+        startNewAttempt();
       }
       return;
     }
