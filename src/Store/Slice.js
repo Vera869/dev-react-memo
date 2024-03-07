@@ -5,6 +5,8 @@ const gamesSlice = createSlice({
   initialState: {
     isMode: false,
     attempts: 3,
+    leaders: [],
+    currentLevel: null,
   },
   reducers: {
     setIsMode(state) {
@@ -17,7 +19,13 @@ const gamesSlice = createSlice({
     clearAttempts(state) {
       state.attempts = 3;
     },
+    setLeaders(state, action) {
+      state.leaders = action.payload;
+    },
+    setCurrentLevel(state, action) {
+      state.currentLevel = action.payload;
+    },
   },
 });
-export const { setIsMode, changeAttempts, clearAttempts } = gamesSlice.actions;
+export const { setIsMode, changeAttempts, clearAttempts, setLeaders, setCurrentLevel } = gamesSlice.actions;
 export const gamesReducer = gamesSlice.reducer;

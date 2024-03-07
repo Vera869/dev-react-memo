@@ -5,7 +5,6 @@ import { Checkbox } from "../../components/Checkbox/checkbox";
 export function SelectLevelPage() {
   return (
     <div className={styles.container}>
-      {/* <Checkbox /> */}
       <div className={styles.modal}>
         <h1 className={styles.title}>Выбери сложность</h1>
         <ul className={styles.levels}>

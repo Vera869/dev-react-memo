@@ -19,7 +19,7 @@ export function Checkbox() {
         <h2 className={styles.header}>Лёгкий режим (3 жизни)</h2>
       </div>
       <button className={styles.button}>Играть</button>
-      <Link to="/" className={styles.link}>
+      <Link to="/leaderboard" className={styles.link}>
         Перейти к лидерборду
       </Link>
     </div>
