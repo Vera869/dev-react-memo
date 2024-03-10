@@ -2,10 +2,15 @@ import { Link } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
 import { Checkbox } from "../../components/Checkbox/checkbox";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentLevel } from "../../Store/Slice";
+import { setCurrentLevel, setLeaders } from "../../Store/Slice";
+import { useEffect } from "react";
+import { getLeaders } from "../../api";
 
 export function SelectLevelPage() {
   const dispatch = useDispatch();
+  useEffect(() => {
+    getLeaders().then(response => dispatch(setLeaders(response.leaders)));
+  }, [dispatch]);
   const levelSelected = useSelector(store => store.games.currentLevel);
   const clickLevel = value => {
     dispatch(setCurrentLevel(value));

@@ -24,7 +24,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
   });
 
   function isAddToLeaders() {
-    if (isWon === true && isLeader.length > 0 && currentLevel === 3) {
+    if (isWon === true && isLeader.length > 0 && currentLevel === 1) {
       return true;
     } else {
       return false;
@@ -33,7 +33,15 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
 
   function addToLeaderboard({ username, time }) {
     buttonRef.disabled = true;
-
+    const valUserName = username.trim();
+    if (valUserName.length > 3 && valUserName.length < 20) {
+      setUsername(valUserName);
+    } else {
+      alert(
+        "Имя пользователя должно сожержать  не менее 3 и не более 20 символов, пожалуйста, используйте буквы и цифры",
+      );
+      return;
+    }
     addLeader({ username, time }).then(() => {
       buttonRef.disabled = false;
       setIsAddingToLeaderboard(true);
