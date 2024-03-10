@@ -1,20 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setIsMode } from "../../Store/Slice";
 import styles from "./checkbox.module.css";
-// import { Button } from "../Button/Button";
 import { Link, useNavigate } from "react-router-dom";
 
 export function Checkbox() {
   const isMode = useSelector(store => store.games.isMode);
   const gemeLevel = useSelector(store => store.games.currentLevel);
-  console.log(isMode);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const changeMode = () => {
     dispatch(setIsMode());
-    // console.log(isMode);
   };
   const clickPlay = () => {
+    if (gemeLevel === null) alert("Для старта игры, пожалуйста, выберите уровень.");
     if (gemeLevel === 1) navigate("/game/3");
     if (gemeLevel === 2) navigate("/game/6");
     if (gemeLevel === 3) navigate("/game/9");

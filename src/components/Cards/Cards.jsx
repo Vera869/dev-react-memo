@@ -76,6 +76,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
     setStatus(status);
+    dispatch(clearAttempts());
   }
   function startGame() {
     const startDate = new Date();
