@@ -158,6 +158,20 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         finishGame(STATUS_LOST);
       } else {
         startNewAttempt();
+        const updatedCards = nextCards.map(card => {
+          if (openCardsWithoutPair.some(openCard => openCard.id === card.id)) {
+            if (card.open) {
+              setTimeout(() => {
+                setCards(prevCards => {
+                  const updated = prevCards.map(c => (c.id === card.id ? { ...c, open: false } : c));
+                  return updated;
+                });
+              }, 500);
+            }
+          }
+          return card;
+        });
+        setCards(updatedCards);
       }
       return;
     }
