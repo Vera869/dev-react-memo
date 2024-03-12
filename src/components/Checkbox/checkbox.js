@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setIsMode } from "../../Store/Slice";
+import { clearAttempts, setIsMode } from "../../Store/Slice";
 import styles from "./checkbox.module.css";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -12,6 +12,7 @@ export function Checkbox() {
     dispatch(setIsMode());
   };
   const clickPlay = () => {
+    dispatch(clearAttempts());
     if (gemeLevel === null) alert("Для старта игры, пожалуйста, выберите уровень.");
     if (gemeLevel === 1) navigate("/game/3");
     if (gemeLevel === 2) navigate("/game/6");

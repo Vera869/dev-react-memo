@@ -14,17 +14,17 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
   const [isAddingToLeaderboard, setIsAddingToLeaderboard] = useState(false);
 
   const currentLevel = useSelector(state => state.games.currentLevel);
-  const leaders = useSelector(state => state.games.leaders);
+  //const leaders = useSelector(state => state.games.leaders);
 
   const buttonRef = useRef();
   const time = gameDurationMinutes * 60 + gameDurationSeconds;
 
-  const isLeader = leaders.filter(leader => {
-    return leader.time > time;
-  });
+  // const isLeader = leaders.filter(leader => {
+  //   return leader.time > time;
+  // });
 
   function isAddToLeaders() {
-    if (isWon === true && isLeader.length > 0 && currentLevel === 3) {
+    if (isWon === true && currentLevel === 3) {
       return true;
     } else {
       return false;
