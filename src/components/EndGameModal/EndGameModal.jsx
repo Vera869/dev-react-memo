@@ -24,7 +24,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
   // });
 
   function isAddToLeaders() {
-    if (isWon === true && currentLevel === 3) {
+    if (isWon === true && currentLevel === 1) {
       return true;
     } else {
       return false;

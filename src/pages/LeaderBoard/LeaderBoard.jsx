@@ -11,14 +11,14 @@ export function LeaderBoard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let position = 1;
-  const newLeaders = useSelector(state => state.games.leaders);
+  const leaders = useSelector(state => state.games.leaders);
 
   useEffect(() => {
     getLeaders().then(response => dispatch(setLeaders(response.leaders)));
   }, [dispatch]);
   const sortedLeaders = useMemo(() => {
-    return [...newLeaders]?.sort((a, b) => a.time - b.time);
-  }, [newLeaders]);
+    return [...leaders]?.sort((a, b) => a.time - b.time);
+  }, [leaders]);
 
   return (
     <div className={styles.container}>
@@ -35,6 +35,7 @@ export function LeaderBoard() {
               position={position++}
               user={leader.name}
               time={leader.time}
+              achievements={leader.achievements}
               isTemplate={false}
             />
           );
