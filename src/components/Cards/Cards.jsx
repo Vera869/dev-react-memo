@@ -76,12 +76,20 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
     setStatus(status);
+    dispatch(clearAttempts());
   }
   function startGame() {
     const startDate = new Date();
     setGameEndDate(null);
     setGameStartDate(startDate);
     setTimer(getTimerValue(startDate, null));
+    setStatus(STATUS_IN_PROGRESS);
+  }
+  function startNewAttempt() {
+    //const startDate = new Date();
+    setGameEndDate(null);
+    //setGameStartDate(startDate);
+    //setTimer(getTimerValue(startDate, null));
     setStatus(STATUS_IN_PROGRESS);
   }
   function resetGame() {
@@ -149,7 +157,21 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       if (!isMode) {
         finishGame(STATUS_LOST);
       } else {
-        startGame();
+        startNewAttempt();
+        const updatedCards = nextCards.map(card => {
+          if (openCardsWithoutPair.some(openCard => openCard.id === card.id)) {
+            if (card.open) {
+              setTimeout(() => {
+                setCards(prevCards => {
+                  const updated = prevCards.map(c => (c.id === card.id ? { ...c, open: false } : c));
+                  return updated;
+                });
+              }, 500);
+            }
+          }
+          return card;
+        });
+        setCards(updatedCards);
       }
       return;
     }
