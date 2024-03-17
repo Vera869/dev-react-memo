@@ -305,7 +305,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     );
   }
 
-  // const withoutSuperpowers = isEpiphanyAvailable && isAlohomoraAvailable;
+  const withoutSuperpowers = isEpiphanyAvailable && isAlohomoraAvailable;
 
   return (
     <>
@@ -417,6 +417,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
               gameDurationSeconds={timer.seconds}
               gameDurationMinutes={timer.minutes}
               onClick={resetGame}
+              withoutSuperpowers={withoutSuperpowers}
             />
           </div>
         ) : null}

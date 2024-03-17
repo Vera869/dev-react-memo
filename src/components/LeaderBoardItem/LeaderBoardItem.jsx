@@ -20,7 +20,6 @@ export function LeaderBoardItem({ position, user, time, isTemplate, achievements
       <div className={isTemplate ? styles.template : styles.item}>
         {isTemplate ? "Достижения" : <Achievements achievements={achievements} />}
       </div>
-      {/* <div className={isTemplate ? styles.template : styles.item}>{isTemplate ? "Достижения" : " lol"}</div> */}
       <p className={isTemplate ? styles.template : styles.item}>{isTemplate ? "Время" : `${minutes}:${seconds}`}</p>
     </div>
   );

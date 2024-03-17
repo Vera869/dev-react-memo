@@ -9,9 +9,10 @@ import { useRef, useState } from "react";
 import { addLeader } from "../../api";
 import { Link } from "react-router-dom";
 
-export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
+export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick, withoutSuperpowers }) {
   const [username, setUsername] = useState("Пользователь");
   const [isAddingToLeaderboard, setIsAddingToLeaderboard] = useState(false);
+  const isMode = useSelector(store => store.games.isMode);
 
   const currentLevel = useSelector(state => state.games.currentLevel);
   //const leaders = useSelector(state => state.games.leaders);
@@ -42,7 +43,18 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
       );
       return;
     }
-    addLeader({ username, time }).then(() => {
+    function achievements() {
+      if (isMode === false && withoutSuperpowers === true) {
+        return [1, 2];
+      } else if (isMode === false && withoutSuperpowers === false) {
+        return [1];
+      } else if (isMode === true && withoutSuperpowers === true) {
+        return [2];
+      } else {
+        return [];
+      }
+    }
+    addLeader({ username, time, achievements }).then(() => {
       buttonRef.disabled = false;
       setIsAddingToLeaderboard(true);
       setUsername("");
