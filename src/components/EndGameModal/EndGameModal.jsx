@@ -32,6 +32,18 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
     }
   }
 
+  function achievements() {
+    if (isMode === false && withoutSuperpowers === true) {
+      return [1, 2];
+    } else if (isMode === false && withoutSuperpowers === false) {
+      return [1];
+    } else if (isMode === true && withoutSuperpowers === true) {
+      return [2];
+    } else {
+      return [];
+    }
+  }
+
   function addToLeaderboard({ username, time }) {
     buttonRef.disabled = true;
     const valUserName = username.trim();
@@ -43,17 +55,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
       );
       return;
     }
-    function achievements() {
-      if (isMode === false && withoutSuperpowers === true) {
-        return [1, 2];
-      } else if (isMode === false && withoutSuperpowers === false) {
-        return [1];
-      } else if (isMode === true && withoutSuperpowers === true) {
-        return [2];
-      } else {
-        return [];
-      }
-    }
+    // console.log(achievements());
     addLeader({ username, time, achievements }).then(() => {
       buttonRef.disabled = false;
       setIsAddingToLeaderboard(true);

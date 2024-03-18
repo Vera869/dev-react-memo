@@ -3,6 +3,7 @@ import { HardModeAchievement } from "./icons/HardModeAchievement";
 import { WithoutSuperpowerAchievement } from "./icons/WithoutSuperpowerAchievement";
 
 export function Achievements(achievements) {
+  // console.log(achievements);
   const hardMode = achievements => {
     if (!achievements) {
       return;
