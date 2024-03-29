@@ -306,7 +306,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   }
 
   const withoutSuperpowers = Boolean(isEpiphanyAvailable && isAlohomoraAvailable);
-  // console.log(withoutSuperpowers);
+  console.log(withoutSuperpowers);
 
   return (
     <>

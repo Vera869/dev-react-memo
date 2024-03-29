@@ -10,10 +10,10 @@ export function getLeaders() {
   });
 }
 
-export function addLeader({ username, time }) {
+export function addLeader({ username, time, achievements }) {
   return fetch(host, {
     method: "POST",
-    body: JSON.stringify({ name: username, time: time }),
+    body: JSON.stringify({ name: username, time: time, achievements: achievements() }),
   }).then(response => {
     if (!response.ok) {
       console.log("Ошибка fetch-запроса");

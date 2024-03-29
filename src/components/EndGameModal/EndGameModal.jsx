@@ -47,7 +47,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
   function addToLeaderboard({ username, time }) {
     buttonRef.disabled = true;
     const valUserName = username.trim();
-    if (valUserName.length > 3 && valUserName.length < 20) {
+    if (valUserName.length > 2 && valUserName.length < 20) {
       setUsername(valUserName);
     } else {
       alert(
