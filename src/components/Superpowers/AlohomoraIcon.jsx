@@ -1,3 +1,4 @@
+import { ToolTips } from "../ToolTips/ToolTips";
 import styles from "./Superpowers.module.css";
 
 export function Alohomora({
@@ -8,6 +9,8 @@ export function Alohomora({
   setIsAlohomoraMouseEnter,
   isEpiphanyMouseEnter,
   isEpiphanyAvailable,
+  isAlohomoraAvailable,
+  isAlohomoraMouseEnter,
 }) {
   return isAvailable ? (
     <div
@@ -16,6 +19,19 @@ export function Alohomora({
       onMouseEnter={() => onMouseEnter({ setIsAlohomoraMouseEnter })}
       onMouseLeave={() => onMouseLeave({ setIsAlohomoraMouseEnter })}
     >
+      {isAlohomoraMouseEnter && isAlohomoraAvailable && (
+        <div className={isEpiphanyAvailable ? styles.toolTipAlohomora : styles.toolTip}>
+          <ToolTips title={"Алохомора"} text={"Открывается случайная пара карт."} />
+        </div>
+      )}
+      {/* {isEpiphanyMouseEnter && isEpiphanyAvailable && (
+        <div className={isAlohomoraAvailable ? styles.toolTipEpiphany : styles.toolTip}>
+          <ToolTips
+            title={"Прозрение"}
+            text={"На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается."}
+          />
+        </div>
+      )} */}
       <svg
         className={styles.circle}
         width="68"

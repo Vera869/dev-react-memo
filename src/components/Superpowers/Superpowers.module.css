@@ -24,4 +24,28 @@
    transition: all 0.3s;
    opacity: 0.5;
  }
+ .toolTip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.toolTipEpiphany {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: -80px;
+  top: 70px;
+}
+
+.toolTipAlohomora {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  /* right: -150px; */
+  left: -80px;
+  top: 70px;
+}
  

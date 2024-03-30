@@ -80,7 +80,7 @@
   display: flex;
 }
 
-.toolTip {
+/* .toolTip {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -100,7 +100,7 @@
   align-items: center;
   position: absolute;
   right: -150px;
-}
+} */
 /* .previewText {
   font-size: 30px;
   line-height: 30px;
