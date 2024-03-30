@@ -1,7 +1,5 @@
 import styles from "./EndGameModal.module.css";
-
 import { Button } from "../Button/Button";
-
 import deadImageUrl from "./images/dead.png";
 import celebrationImageUrl from "./images/celebration.png";
 import { useSelector } from "react-redux";
@@ -15,14 +13,9 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
   const isMode = useSelector(store => store.games.isMode);
 
   const currentLevel = useSelector(state => state.games.currentLevel);
-  //const leaders = useSelector(state => state.games.leaders);
 
   const buttonRef = useRef();
   const time = gameDurationMinutes * 60 + gameDurationSeconds;
-
-  // const isLeader = leaders.filter(leader => {
-  //   return leader.time > time;
-  // });
 
   function isAddToLeaders() {
     if (isWon === true && currentLevel === 1) {

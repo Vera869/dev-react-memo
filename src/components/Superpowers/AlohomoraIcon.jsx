@@ -24,14 +24,6 @@ export function Alohomora({
           <ToolTips title={"Алохомора"} text={"Открывается случайная пара карт."} />
         </div>
       )}
-      {/* {isEpiphanyMouseEnter && isEpiphanyAvailable && (
-        <div className={isAlohomoraAvailable ? styles.toolTipEpiphany : styles.toolTip}>
-          <ToolTips
-            title={"Прозрение"}
-            text={"На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается."}
-          />
-        </div>
-      )} */}
       <svg
         className={styles.circle}
         width="68"
