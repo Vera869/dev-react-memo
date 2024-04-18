@@ -288,15 +288,19 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         closedCard.rank === firstRandomCard.rank &&
         firstRandomCard.id !== closedCard.id,
     );
-    setCards(
-      cards.map(card => {
-        if (card === firstRandomCard || card === secondRandomCard[0]) {
-          return { ...card, open: true };
-        } else {
-          return card;
-        }
-      }),
-    );
+    const newCards = cards.map(card => {
+      if (card === firstRandomCard || card === secondRandomCard[0]) {
+        return { ...card, open: true };
+      } else {
+        return card;
+      }
+    });
+    setCards(newCards);
+    const isPlayerWon = newCards.every(card => card.open);
+    if (isPlayerWon) {
+      finishGame(STATUS_WON);
+      return;
+    }
   }
 
   const withoutSuperpowers = Boolean(isEpiphanyAvailable && isAlohomoraAvailable);
