@@ -42,6 +42,7 @@
 }
 
 .superPowersContainer {
+  width: 180px;
   display: flex;
   gap: 15px;
   position: relative;
