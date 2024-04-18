@@ -56,12 +56,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   // Текущий статус игры
   const [status, setStatus] = useState(STATUS_PREVIEW);
 
-  // Дата начала игры
-  const [gameStartDate, setGameStartDate] = useState(null);
-  // Дата конца игры
-  const [gameEndDate, setGameEndDate] = useState(null);
-
-  // Стейт для таймера, высчитывается в setInteval на основе gameStartDate и gameEndDate
+  // Стейт для таймера, высчитывается в setInteval
   const [timer, setTimer] = useState({
     seconds: 0,
     minutes: 0,
@@ -103,14 +98,12 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   });
 
   function finishGame(status = STATUS_LOST) {
-    setGameEndDate(new Date());
+    //setTimer(getTimerValue(null, null));
     setStatus(status);
     dispatch(clearAttempts());
   }
   function startGame() {
     const startDate = new Date();
-    setGameEndDate(null);
-    setGameStartDate(startDate);
     setTimer(getTimerValue(startDate, null));
     setStatus(STATUS_IN_PROGRESS);
 
@@ -120,13 +113,10 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setIsAlohomoraMouseEnter(false);
   }
   function startNewAttempt() {
-    setGameEndDate(null);
     setStatus(STATUS_IN_PROGRESS);
   }
   function resetGame() {
     dispatch(clearAttempts());
-    setGameStartDate(null);
-    setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
   }
@@ -238,16 +228,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     };
   }, [status, pairsCount, previewSeconds]);
 
-  // Обновляем значение таймера в интервале
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTimer(getTimerValue(gameStartDate, gameEndDate));
-    }, 300);
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [gameStartDate, gameEndDate]);
-
   const GoToLevelPage = () => {
     resetGame();
   };
@@ -275,7 +255,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       setTimer(currentTime);
       setStatus(STATUS_IN_PROGRESS);
     }, 5000);
-    setTimer(currentTime);
   }
 
   function onAlohomoraClick() {
