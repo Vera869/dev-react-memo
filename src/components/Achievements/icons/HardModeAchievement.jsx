@@ -75,7 +75,7 @@ export function HardModeAchievement(hardMode) {
           </defs>
         </svg>
       )}
-      {isMouseEnter && (
+      {isMouseEnter && hardMode.hardMode ? (
         <div className={styles.toolTip}>
           <svg
             className={styles.toolTipImg}
@@ -90,6 +90,8 @@ export function HardModeAchievement(hardMode) {
           </svg>
           <p className={styles.toolTipTextWider}>Игра пройдена в сложном режиме</p>
         </div>
+      ) : (
+        ""
       )}
     </div>
   );
