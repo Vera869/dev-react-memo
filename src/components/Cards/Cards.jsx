@@ -20,6 +20,7 @@ const STATUS_WON = "STATUS_WON";
 const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
 // Начало игры: игрок видит все карты в течении нескольких секунд
 const STATUS_PREVIEW = "STATUS_PREVIEW";
+// Идёт игра: таймер останавливается на время работы суперсилы
 const STATUS_PAUSED = "STATUS_PAUSED";
 
 function getTimerValue(startDate, endDate) {
@@ -254,6 +255,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   // логика работы суперсилы
   function onEpiphanyClick() {
     const currentTime = timer;
+    console.log(currentTime);
     setStatus(STATUS_PAUSED);
     setIsEpiphanyAvailable(false);
     const closedCards = cards.filter(card => !card.open);
@@ -273,6 +275,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       setTimer(currentTime);
       setStatus(STATUS_IN_PROGRESS);
     }, 5000);
+    setTimer(currentTime);
   }
 
   function onAlohomoraClick() {
@@ -297,7 +300,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   }
 
   const withoutSuperpowers = Boolean(isEpiphanyAvailable && isAlohomoraAvailable);
-  console.log(withoutSuperpowers);
 
   return (
     <>

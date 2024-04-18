@@ -48,7 +48,6 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
       );
       return;
     }
-    // console.log(achievements());
     addLeader({ username, time, achievements }).then(() => {
       buttonRef.disabled = false;
       setIsAddingToLeaderboard(true);
