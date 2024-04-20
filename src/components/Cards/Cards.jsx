@@ -119,6 +119,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     dispatch(clearAttempts());
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
+    setIsEpiphanyAvailable(true);
+    setIsAlohomoraAvailable(true);
   }
 
   /**
@@ -235,7 +237,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   // логика работы суперсилы
   function onEpiphanyClick() {
     const currentTime = timer;
-    console.log(currentTime);
     setStatus(STATUS_PAUSED);
     setIsEpiphanyAvailable(false);
     const closedCards = cards.filter(card => !card.open);
@@ -260,7 +261,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   function onAlohomoraClick() {
     setIsAlohomoraAvailable(false);
     const closedCards = cards.filter(card => !card.open);
-    const firstRandomCard = closedCards[Math.round(Math.random() * (closedCards.length - 1) + 1)];
+    const firstRandomCard = closedCards[0];
     const secondRandomCard = closedCards.filter(
       closedCard =>
         closedCard.suit === firstRandomCard.suit &&
