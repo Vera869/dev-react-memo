@@ -20,6 +20,7 @@ const STATUS_WON = "STATUS_WON";
 const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
 // Начало игры: игрок видит все карты в течении нескольких секунд
 const STATUS_PREVIEW = "STATUS_PREVIEW";
+// Идёт игра: таймер останавливается на время работы суперсилы
 const STATUS_PAUSED = "STATUS_PAUSED";
 
 function getTimerValue(startDate, endDate) {
@@ -55,12 +56,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   // Текущий статус игры
   const [status, setStatus] = useState(STATUS_PREVIEW);
 
-  // Дата начала игры
-  const [gameStartDate, setGameStartDate] = useState(null);
-  // Дата конца игры
-  const [gameEndDate, setGameEndDate] = useState(null);
-
-  // Стейт для таймера, высчитывается в setInteval на основе gameStartDate и gameEndDate
+  // Стейт для таймера, высчитывается в setInteval
   const [timer, setTimer] = useState({
     seconds: 0,
     minutes: 0,
@@ -102,14 +98,12 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   });
 
   function finishGame(status = STATUS_LOST) {
-    setGameEndDate(new Date());
+    //setTimer(getTimerValue(null, null));
     setStatus(status);
     dispatch(clearAttempts());
   }
   function startGame() {
     const startDate = new Date();
-    setGameEndDate(null);
-    setGameStartDate(startDate);
     setTimer(getTimerValue(startDate, null));
     setStatus(STATUS_IN_PROGRESS);
 
@@ -119,15 +113,14 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setIsAlohomoraMouseEnter(false);
   }
   function startNewAttempt() {
-    setGameEndDate(null);
     setStatus(STATUS_IN_PROGRESS);
   }
   function resetGame() {
     dispatch(clearAttempts());
-    setGameStartDate(null);
-    setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
+    setIsEpiphanyAvailable(true);
+    setIsAlohomoraAvailable(true);
   }
 
   /**
@@ -237,16 +230,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     };
   }, [status, pairsCount, previewSeconds]);
 
-  // Обновляем значение таймера в интервале
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTimer(getTimerValue(gameStartDate, gameEndDate));
-    }, 300);
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [gameStartDate, gameEndDate]);
-
   const GoToLevelPage = () => {
     resetGame();
   };
@@ -278,26 +261,29 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   function onAlohomoraClick() {
     setIsAlohomoraAvailable(false);
     const closedCards = cards.filter(card => !card.open);
-    const firstRandomCard = closedCards[Math.round(Math.random() * (closedCards.length - 1) + 1)];
+    const firstRandomCard = closedCards[0];
     const secondRandomCard = closedCards.filter(
       closedCard =>
         closedCard.suit === firstRandomCard.suit &&
         closedCard.rank === firstRandomCard.rank &&
         firstRandomCard.id !== closedCard.id,
     );
-    setCards(
-      cards.map(card => {
-        if (card === firstRandomCard || card === secondRandomCard[0]) {
-          return { ...card, open: true };
-        } else {
-          return card;
-        }
-      }),
-    );
+    const newCards = cards.map(card => {
+      if (card === firstRandomCard || card === secondRandomCard[0]) {
+        return { ...card, open: true };
+      } else {
+        return card;
+      }
+    });
+    setCards(newCards);
+    const isPlayerWon = newCards.every(card => card.open);
+    if (isPlayerWon) {
+      finishGame(STATUS_WON);
+      return;
+    }
   }
 
   const withoutSuperpowers = Boolean(isEpiphanyAvailable && isAlohomoraAvailable);
-  console.log(withoutSuperpowers);
 
   return (
     <>

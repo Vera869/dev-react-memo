@@ -113,7 +113,7 @@ export function WithoutSuperpowerAchievement(withoutSuperpower) {
           </defs>
         </svg>
       )}
-      {isMouseEnter && (
+      {isMouseEnter && withoutSuperpower.withoutSuperpower ? (
         <div className={styles.toolTip}>
           <svg
             className={styles.toolTipImg}
@@ -128,6 +128,8 @@ export function WithoutSuperpowerAchievement(withoutSuperpower) {
           </svg>
           <p className={styles.toolTipText}>Игра пройдена без супер-сил</p>
         </div>
+      ) : (
+        ""
       )}
     </div>
   );

@@ -1,5 +1,6 @@
 import { ToolTips } from "../ToolTips/ToolTips";
 import styles from "./Superpowers.module.css";
+import { useSelector } from "react-redux";
 
 export function Epiphany({
   isAvailable,
@@ -12,6 +13,7 @@ export function Epiphany({
   isEpiphanyMouseEnter,
   isEpiphanyAvailable,
 }) {
+  const isMode = useSelector(store => store.games.isMode);
   return isAvailable ? (
     <div
       className={isAlohomoraMouseEnter && isAlohomoraAvailable ? styles.hidden : styles.icon}
@@ -20,14 +22,21 @@ export function Epiphany({
       onMouseLeave={() => onMouseLeave({ setIsEpiphanyMouseEnter })}
     >
       {isEpiphanyMouseEnter && isEpiphanyAvailable && (
-        <div className={isAlohomoraAvailable ? styles.toolTipEpiphany : styles.toolTip}>
+        <div className={isMode ? styles.toolTipWithMode : styles.toolTip}>
           <ToolTips
             title={"Прозрение"}
             text={"На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается."}
           />
         </div>
       )}
-      <svg width="68" height="68" viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg
+        className={styles.circle}
+        width="68"
+        height="68"
+        viewBox="0 0 68 68"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
         <rect width="68" height="68" rx="34" fill="#C2F5FF" />
         <path
           d="M6.06365 35.2703L6.06519 35.273C11.8167 45.1958 22.5591 51.3889 34 51.3889C45.4394 51.3889 56.1832 45.2593 61.9355 35.2718L61.9363 35.2703L62.4341 34.3992L62.5759 34.1511L62.4341 33.903L61.9364 33.0319L61.9348 33.0293C56.1833 23.1064 45.4409 16.9133 34 16.9133C22.5591 16.9133 11.8167 23.1064 6.06519 33.0293L6.06518 33.0293L6.06366 33.0319L5.56588 33.903L5.42412 34.1511L5.56588 34.3992L6.06366 35.2703L6.06365 35.2703Z"

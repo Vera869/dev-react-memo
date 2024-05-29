@@ -1,5 +1,6 @@
 import { ToolTips } from "../ToolTips/ToolTips";
 import styles from "./Superpowers.module.css";
+import { useSelector } from "react-redux";
 
 export function Alohomora({
   isAvailable,
@@ -12,6 +13,7 @@ export function Alohomora({
   isAlohomoraAvailable,
   isAlohomoraMouseEnter,
 }) {
+  const isMode = useSelector(store => store.games.isMode);
   return isAvailable ? (
     <div
       className={isEpiphanyMouseEnter && isEpiphanyAvailable ? styles.hidden : styles.icon}
@@ -20,7 +22,7 @@ export function Alohomora({
       onMouseLeave={() => onMouseLeave({ setIsAlohomoraMouseEnter })}
     >
       {isAlohomoraMouseEnter && isAlohomoraAvailable && (
-        <div className={isEpiphanyAvailable ? styles.toolTipAlohomora : styles.toolTip}>
+        <div className={isMode ? styles.toolTipWithMode : styles.toolTip}>
           <ToolTips title={"Алохомора"} text={"Открывается случайная пара карт."} />
         </div>
       )}

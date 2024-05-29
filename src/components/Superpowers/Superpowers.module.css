@@ -10,9 +10,11 @@
    cursor: pointer;
    transition: all 0.3s;
  }
- 
+ .circle{
+  position: relative;
+ }
  .cards {
-   position: absolute;
+   position: fixed;
  }
  
  .hidden {
@@ -28,23 +30,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: fixed;
+  left: 500px;
+  top: 250px;
 }
 
-.toolTipEpiphany {
+.toolTipWithMode {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  left: -80px;
-  top: 70px;
+  position: fixed;
+  left: 600px;
+  top: 300px;
 }
 
-.toolTipAlohomora {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  left: -80px;
-  top: 70px;
-}
  
