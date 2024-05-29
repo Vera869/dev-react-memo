@@ -10,7 +10,6 @@
 }
 
 .checkbox {
-  /* height: 32px; */
   display: flex;
   flex-direction: row;
 }
